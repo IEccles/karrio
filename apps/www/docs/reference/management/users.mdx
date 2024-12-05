@@ -103,7 +103,7 @@ As mentioned above, if the you have configured the karrio server email settings,
 the user will receive an email with a link to activate their account.
 
 ```
-http://localhost:3000/email/YWxleC5taWxsZXIyNEBvdXRsb29rLmNvbQ-axd6yl-ce379fa50ced5079908ab669cabb456a89f441c2
+http://app.karrio.invente.co.uk/email/YWxleC5taWxsZXIyNEBvdXRsb29rLmNvbQ-axd6yl-ce379fa50ced5079908ab669cabb456a89f441c2
 ```
 
 The link contains a `token` which is required to proceed with the second mutation, `confirm_email`:
@@ -215,7 +215,7 @@ mutation {
     request_password_reset(
         input: {
             email: "test@example.com"
-            redirect_url: "localhost:3000/password/reset"
+            redirect_url: "app.karrio.invente.co.uk/password/reset"
         }
     ) {
         errors {
@@ -230,7 +230,7 @@ As a result, if there are no errors in the response, the system sends an email t
 user@example.com with a link to provide a new password, for example:
 
 ```
-http://localhost:3000/password/reset?uidb64=Mw&token=ax10pr-af2cc4352f19713547b12ab0dd6c0661
+http://app.karrio.invente.co.uk/password/reset?uidb64=Mw&token=ax10pr-af2cc4352f19713547b12ab0dd6c0661
 ```
 
 The link contains two query parameters— `uidb64` and `token` — which are required to proceed
