@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-set -e
+set -e  # Exit on any error
 
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+# Trap to clean up background processes
+trap 'kill 0' SIGINT SIGTERM EXIT
 
-# Activate python env
+# Activate Python virtual environment
 source "bin/activate-env" > /dev/null 2>&1
 
+# Export required environment variables
 export WORKER_IMMEDIATE_MODE=False
+
+# Start server and worker in the background
 ./bin/start-server &
 ./bin/start-worker &
 
+# Wait for background processes
 wait
