@@ -214,7 +214,7 @@ ROOT_URLCONF = "karrio.server.urls"
 LOGIN_URL = BASE_PATH + "/login/"
 LOGOUT_REDIRECT_URL = BASE_PATH + "/login/"
 LOGIN_REDIRECT_URL = BASE_PATH + "/admin/"
-OPEN_API_PATH = "openapi/"
+OPEN_API_PATH = BASE_PATH + "/openapi/"
 
 NAMESPACED_URLS = [
     ("api/", "rest_framework.urls", "rest_framework"),
