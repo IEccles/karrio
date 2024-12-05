@@ -4,8 +4,8 @@ import requests
 
 app = typer.Typer()
 
-DEFAULT_HOST = "http://localhost:4003"
-
+# Set the default host to just the domain name, without the port
+DEFAULT_HOST = os.environ.get("KARRIO_HOST", "http://karrio.invente.co.uk")
 
 def get_config():
     config_file = os.path.expanduser("~/.karrio/config")
@@ -40,7 +40,7 @@ def login(
     Configure a connection to a Karrio instance.
 
     Example:
-    ./bin/cli login --host http://localhost:4003 --api-key your_api_key_here | jq '{message: "Login successful", host: .host}'
+    ./bin/cli login --host http://karrio.invente.co.uk --api-key your_api_key_here | jq '{message: "Login successful", host: .host}'
     """
     if not host:
         host = DEFAULT_HOST
