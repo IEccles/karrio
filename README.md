@@ -47,7 +47,7 @@ cd karrio/docker
 docker compose up
 ```
 
--   Karrio server accessible at <http://localhost:5002>
+-   Karrio server accessible at <http://localhost:4003>
 -   Karrio dashboard accessible at <http://localhost:3000>
 
 Default Login: `admin@example.com` | `demo`

@@ -22,7 +22,7 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       KARRIO_HTTP_PORT: ${KARRIO_HTTP_PORT}
     healthcheck:
-      test: curl --fail http://api:5002/ || exit 1
+      test: curl --fail http://api:4003/ || exit 1
       interval: 40s
       timeout: 30s
       retries: 5
@@ -59,7 +59,7 @@ services:
         condition: service_healthy
         restart: true
     environment:
-      KARRIO_URL: http://api:${KARRIO_HTTP_PORT:-5002}
+      KARRIO_URL: http://api:${KARRIO_HTTP_PORT:-4003}
       NEXTAUTH_SECRET: ${JWT_SECRET}
       NEXT_PUBLIC_DASHBOARD_URL: ${DASHBOARD_URL}
       NEXT_PUBLIC_KARRIO_PUBLIC_URL: ${KARRIO_PUBLIC_URL}

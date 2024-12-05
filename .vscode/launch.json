@@ -10,7 +10,7 @@
       "program": "${workspaceFolder}/apps/api/karrio/server/__main__.py",
       "args": [
         "runserver",
-        "0.0.0.0:5002"
+        "0.0.0.0:4003"
       ],
       "django": true,
       "justMyCode": true

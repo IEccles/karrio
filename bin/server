@@ -6,19 +6,19 @@ source "bin/activate-env" >/dev/null 2>&1
 # Run server commands
 if [[ "$*" == *gen:ee* ]]; then
     cd "${ROOT:?}"
-    npx apollo service:download --endpoint=http://0.0.0.0:5002/graphql/ "${ROOT:?}/schemas/graphql-ee.json"
+    npx apollo service:download --endpoint=http://0.0.0.0:4003/graphql/ "${ROOT:?}/schemas/graphql-ee.json"
     cd -
 elif [[ "$*" == *gen:graph* ]]; then
     cd "${ROOT:?}"
-    npx apollo service:download --endpoint=http://0.0.0.0:5002/graphql/ "${ROOT:?}/schemas/graphql.json"
+    npx apollo service:download --endpoint=http://0.0.0.0:4003/graphql/ "${ROOT:?}/schemas/graphql.json"
     cd -
 elif [[ "$*" == *gen:admin* ]]; then
     cd "${ROOT:?}"
-    npx apollo service:download --endpoint=http://0.0.0.0:5002/admin/graphql/ "${ROOT:?}/schemas/graphql-admin.json"
+    npx apollo service:download --endpoint=http://0.0.0.0:4003/admin/graphql/ "${ROOT:?}/schemas/graphql-admin.json"
     cd -
 elif [[ "$*" == *gen:openapi* ]]; then
     cd "${ROOT:?}"
-    curl http://localhost:5002/shipping-openapi -o "${ROOT:?}/schemas/openapi.yml"
+    curl http://localhost:4003/shipping-openapi -o "${ROOT:?}/schemas/openapi.yml"
     cd -
 elif [[ "$*" == *gen:ts:cli* ]]; then
     cd "${ROOT:?}"

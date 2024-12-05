@@ -4,7 +4,7 @@ services:
     image: ghcr.io/karrioapi/server:$KARRIO_TAG
     restart: unless-stopped
     ports:
-      - 5002:5002
+      - 4003:4003
     depends_on:
       - db
       - redis

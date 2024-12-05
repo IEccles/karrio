@@ -168,11 +168,11 @@ ParsedShipmentResponse = [
             "easyship_courier_account_id": "7505df80-af51-46a0-b2ee-ac9eacfcd3e4",
             "easyship_courier_id": "b85683b8-1d32-41d7-b9af-63ae712ef3fe",
             "easyship_shipment_id": "ESUS220509144",
-            "tracking_numbers": ["9405509104250026972189"],
+            "tracking_numbers": ["9405509104240036972189"],
             "rate_provider": "ups",
         },
         "shipment_identifier": "ESUS220509144",
-        "tracking_number": "9405509104250026972189",
+        "tracking_number": "9405509104240036972189",
     },
     [],
 ]
@@ -1092,7 +1092,7 @@ ShipmentResponse = """{
 				"handler": "usps",
 				"leg_number": 1,
 				"local_tracking_number": null,
-				"tracking_number": "9405509104250026972189",
+				"tracking_number": "9405509104240036972189",
 				"tracking_state": "active"
 			}
 		],

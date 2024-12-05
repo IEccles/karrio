@@ -102,7 +102,7 @@ api.$DOMAIN {
         }
     }
     handle {
-        reverse_proxy http://api:5002
+        reverse_proxy http://api:4003
     }
     encode gzip
     log {

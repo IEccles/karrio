@@ -4,7 +4,7 @@ import requests
 
 app = typer.Typer()
 
-DEFAULT_HOST = "http://localhost:5002"
+DEFAULT_HOST = "http://localhost:4003"
 
 
 def get_config():
@@ -40,7 +40,7 @@ def login(
     Configure a connection to a Karrio instance.
 
     Example:
-    ./bin/cli login --host http://localhost:5002 --api-key your_api_key_here | jq '{message: "Login successful", host: .host}'
+    ./bin/cli login --host http://localhost:4003 --api-key your_api_key_here | jq '{message: "Login successful", host: .host}'
     """
     if not host:
         host = DEFAULT_HOST
