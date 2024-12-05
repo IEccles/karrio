@@ -43,7 +43,7 @@ Path(WORK_DIR).mkdir(parents=True, exist_ok=True)
 
 USE_HTTPS = config("USE_HTTPS", default=False, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*").split(",")
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="https://*").split(",")
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="https://*,https://karrio.invente.co.uk").split(",")
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -69,9 +69,7 @@ if USE_HTTPS is True:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
-    CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="https://*").split(
-        ","
-    )
+    CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="https://*,https://karrio.invente.co.uk").split(",")
 
 
 # karrio packages settings
