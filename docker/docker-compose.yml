@@ -53,7 +53,7 @@ services:
     image: karrio.docker.scarf.sh/karrio/dashboard:$KARRIO_TAG
     restart: unless-stopped
     ports:
-      - ${DASHBOARD_PORT}:3000/tcp
+      - ${DASHBOARD_PORT}:4004/tcp
     depends_on:
       api:
         condition: service_healthy
