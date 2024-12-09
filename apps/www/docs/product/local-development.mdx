@@ -71,7 +71,7 @@ you need to update `KARRIO_PUBLIC_URL` in the `.env` file to your server's `IP a
 
 ...
 - DASHBOARD_URL=http://app.karrio.invente.co.uk
-+ DASHBOARD_URL=http://[YOUR-VM-IP-ADDRESS]:3000
++ DASHBOARD_URL=http://[YOUR-VM-IP-ADDRESS]:4004
 ...
 
 ```
@@ -210,7 +210,7 @@ karrio.api        | Redis connection initialized at: redis://redis:6379/1
 # docker ps
 
 karrio.api          karrio.docker.scarf.sh/karrio/server:2023.4.2     0.0.0.0:4003->4003/tcp, :::4003->4003/tcp
-karrio.dashboard    karrio.docker.scarf.sh/karrio/dashboard:2023.4.2  0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
+karrio.dashboard    karrio.docker.scarf.sh/karrio/dashboard:2023.4.2  0.0.0.0:4004->4004/tcp, :::4004->4004/tcp
 karrio.db           postgres                                          0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 karrio.mail         maildev/maildev                                   0.0.0.0:1025->1025/tcp, :::1025->1025/tcp, 0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
 karrio.redis        redis                                             0.0.0.0:6379->6379/tcp, :::6379->6379/tcp

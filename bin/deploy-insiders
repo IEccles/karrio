@@ -110,7 +110,7 @@ api.$DOMAIN {
     }
 }
 app.$DOMAIN {
-    reverse_proxy http://dashboard:3000
+    reverse_proxy https://app.karrio.invente.co.uk
 }
 EOF
 

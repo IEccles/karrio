@@ -28,7 +28,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SENTRY_IGNORE_API_RESOLUTION_ERROR=1
 ENV NEXT_PUBLIC_DASHBOARD_VERSION=${VERSION}
-ENV NEXT_PUBLIC_DASHBOARD_URL=http://localhost:3000
+ENV NEXT_PUBLIC_DASHBOARD_URL=http://localhost:4004
 ENV NEXT_PUBLIC_KARRIO_PUBLIC_URL=http://locahost:4003
 
 RUN addgroup -g 1001 -S nodejs
@@ -44,6 +44,6 @@ COPY --from=builder /app/apps/dashboard/package.json ./package.json
 COPY --from=builder /app/docker/dashboard/entrypoint ./entrypoint
 
 
-EXPOSE 3000
+EXPOSE 4004
 
 CMD ["/bin/sh", "./entrypoint"]
