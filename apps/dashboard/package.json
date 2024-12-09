@@ -2,7 +2,7 @@
   "name": "@karrio/dashboard",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 4004",
     "dev:oss": "next dev",
     "build": "next build",
     "start": "next start",
