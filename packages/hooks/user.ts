@@ -34,10 +34,6 @@ export function useUser() {
   const karrio = useKarrio();
   const user = karrio.pageData?.user;
 
-  if (karrio && karrio.graphql) {
-    console.log('omg wow karrio.graphql is actually defined so wtf is going on')
-  }
-
   // Queries
   const query = useQuery({
     queryKey: ["user"],
