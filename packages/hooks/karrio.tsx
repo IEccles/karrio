@@ -58,12 +58,12 @@ export const ClientProvider = ({
 };
 
 export function useKarrio() {
-  console.log('some fuckery and that', APIClientsContext)
   try {
+    console.log('some fuckery and that', APIClientsContext)
     return React.useContext(APIClientsContext);
   } catch (err) {
     console.log(err)
-    throw new Error('more more more', err)
+    throw new Error('more more more')
   }
 }
 
