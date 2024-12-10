@@ -34,25 +34,36 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
   {} as APIClientsContextProps
 );
 
-export const ClientProvider = ({
-  children,
-  ...pageData
-}: ClientProviderProps): JSX.Element => {
+export const ClientProvider = ({ children }) => {
   const { getHost, references } = useAPIMetadata();
-  const {
-    query: { data: session },
-  } = useSyncedSession();
-  const updateClient = (ref: any, session: any) => ({
-    ...setupRestClient(getHost(), session),
-    isAuthenticated: !!session?.accessToken,
-    pageData,
-  });
+  const { query: { data: session } } = useSyncedSession();
 
-  if (!getHost || !getHost() || !session) return <></>;
+  if (!getHost || !session) {
+    console.error("Missing dependencies: getHost or session", {
+      getHost: getHost?.(),
+      session,
+    });
+    return <div>Loading...</div>; // Provide fallback UI
+  }
 
-  console.log("ClientProvider: contextValue", contextValue)
+  const updateClient = (ref, session) => {
+    const client = {
+      ...setupRestClient(getHost(), session),
+      isAuthenticated: !!session?.accessToken,
+      pageData,
+      host: getHost(),
+      session,
+    };
+    console.log("Updated Client Context:", client);
+    return client;
+  };
+
+  const contextValue = updateClient(references, session);
+
+  console.log("ClientProvider: contextValue", contextValue);
+
   return (
-    <APIClientsContext.Provider value={updateClient(references, session)}>
+    <APIClientsContext.Provider value={contextValue}>
       {children}
     </APIClientsContext.Provider>
   );
@@ -111,6 +122,7 @@ export function setupRestClient(host: string, session?: SessionType): KarrioClie
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
 
   console.log("Initialized RestClient:", { client, session, host });
+  console.log("GraphQL Client:", client.graphql);
 
   return client;
 }
