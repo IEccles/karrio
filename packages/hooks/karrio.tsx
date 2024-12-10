@@ -42,16 +42,24 @@ export const ClientProvider = ({
   const {
     query: { data: session },
   } = useSyncedSession();
-  const updateClient = (ref: any, session: any) => ({
-    ...setupRestClient(getHost(), session),
-    isAuthenticated: !!session?.accessToken,
-    pageData,
-  });
+
+  const updateClient = (ref: any, session: any) => {
+    const client = {
+      ...setupRestClient(getHost(), session),
+      isAuthenticated: !!session?.accessToken,
+      pageData,
+    };
+    console.log('updateClient:', client);
+    return client;
+  };
 
   if (!getHost || !getHost() || !session) return <></>;
 
+  const contextValue = updateClient(references, session);
+  console.log('APIClientsContext value:', contextValue);
+
   return (
-    <APIClientsContext.Provider value={updateClient(references, session)}>
+    <APIClientsContext.Provider value={contextValue}>
       {children}
     </APIClientsContext.Provider>
   );
@@ -60,7 +68,7 @@ export const ClientProvider = ({
 export function useKarrio() {
   const context = React.useContext(APIClientsContext);
   console.log('useKarrio context:', context, APIClientsContext);
-  if (!context) {
+  if (!context || Object.keys(context).length === 0) {
     throw new Error('useKarrio must be used within a ClientProvider');
   }
   return context;
