@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const org = metadata?.MULTI_ORGANIZATIONS
             ? await auth.getCurrentOrg(token.access, orgId)
             : { id: null };
-
+      
           return {
             email: credentials.email,
             accessToken: token.access,
@@ -40,9 +40,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             testMode,
           } as any;
         } catch (e) {
-          logger.error(e);
+          logger.error("Authorization error", e);
+          throw new Error("auth failed");
         }
-
+      
         // Return null if user data could not be retrieved
         return null;
       },
