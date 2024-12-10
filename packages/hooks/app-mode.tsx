@@ -4,6 +4,7 @@ import { BASE_PATH, TEST_BASE_PATH, setCookie } from "@karrio/lib";
 import { usePathname } from "next/navigation";
 import { useLocation } from "./location";
 import React from "react";
+import { ClientProvider } from "./karrio"; // Import ClientProvider
 
 type AppModeType = {
   basePath: string;
@@ -34,7 +35,6 @@ const AppModeProvider = ({
 
   const switchMode = () => {
     insertUrlParam({});
-    // const currentPathName = `${location.pathname}`;
     const isTestMode = computeMode(currentPathName);
 
     setCookie("testMode", !isTestMode);
@@ -52,7 +52,9 @@ const AppModeProvider = ({
         switchMode,
       }}
     >
-      {children}
+      <ClientProvider>
+        {children}
+      </ClientProvider>
     </AppMode.Provider>
   );
 };
