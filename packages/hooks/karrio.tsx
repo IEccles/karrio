@@ -37,6 +37,7 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
 export const ClientProvider = ({ children }) => {
   const { getHost, references } = useAPIMetadata();
   const { query: { data: session } } = useSyncedSession();
+  console.log(useSyncedSession())
 
   if (!getHost || !session) {
     console.error("Missing dependencies: getHost or session", {
