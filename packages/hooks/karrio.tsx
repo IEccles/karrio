@@ -15,6 +15,13 @@ import { useSyncedSession } from "@karrio/hooks/session";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
+ReactDOM.render(
+  <ClientProvider>
+    <App />
+  </ClientProvider>,
+  document.getElementById('root')
+);
+
 type ClientProviderProps = {
   children?: React.ReactNode;
 };
@@ -59,6 +66,7 @@ export const ClientProvider = ({
 
 export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
+  console.log("useKarrio: context", context);
   if (!context) {
     throw new Error("useKarrio must be used within a ClientProvider");
   }
