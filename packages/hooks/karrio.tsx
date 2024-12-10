@@ -67,6 +67,9 @@ export function useKarrio() {
   }
 }
 
+const fuck = useKarrio();
+console.log('exsqueeze me', fuck, fuck.graphql)
+
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
     const testHeader: any = !!session?.testMode
