@@ -70,19 +70,23 @@ export const ClientProvider = ({ children }) => {
 };
 
 export function useKarrio(): APIClientsContextProps {
-  const creation = React.createContext(APIClientsContext)
-  const context = React.useContext(creation);
-  console.log('no you\'ve got to put some swaz on it gromit TOP BINSSSS!!!!', creation, context)
-  if (!context || Object.keys(context).length === 0) {
-    throw new Error("useKarrio must be used within a ClientProvider");
+  const context = React.useContext(APIClientsContext);
+  const { getHost } = useAPIMetadata();
+  const { query: { data: session } } = useSyncedSession();
+
+  console.log("useKarrio: context", context);
+
+  // If context is missing host or session, set them up
+  if (!context.host || !context.session) {
+    if (!getHost || !session) {
+      throw new Error("Context is missing host or session, and they cannot be created");
+    }
+    context.host = getHost();
+    context.session = session;
   }
 
-  console.log('some fucking context', context)
   // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
-    if (!context.host || !context.session) {
-      throw new Error("Context is missing host or session");
-    }
     const updatedClient = setupRestClient(context.host, context.session);
     context.graphql = updatedClient.graphql;
   }
