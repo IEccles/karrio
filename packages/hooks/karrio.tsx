@@ -70,7 +70,8 @@ export const ClientProvider = ({ children }) => {
 };
 
 export function useKarrio(): APIClientsContextProps {
-  const context = React.useContext(APIClientsContext);
+  const creation = React.createContext(APIClientsContext)
+  const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
   const { query: { data: session } } = useSyncedSession();
 
