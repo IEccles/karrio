@@ -34,14 +34,9 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
   {} as APIClientsContextProps
 );
 
-export const ClientProvider = ({
-  children,
-  ...pageData
-}: ClientProviderProps): JSX.Element => {
+export const ClientProvider = ({ children }) => {
   const { getHost, references } = useAPIMetadata();
-  const {
-    query: { data: session },
-  } = useSyncedSession();
+  const { query: { data: session } } = useSyncedSession();
 
   if (!getHost || !getHost() || !session) {
     console.error("Missing dependencies: getHost or session", {
@@ -51,7 +46,7 @@ export const ClientProvider = ({
     return <div>Loading...</div>; // Provide fallback UI
   }
 
-  const updateClient = (ref: any, session: any): APIClientsContextProps => {
+  const updateClient = (ref, session) => {
     const client = {
       ...setupRestClient(getHost(), session),
       isAuthenticated: !!session?.accessToken,
