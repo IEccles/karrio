@@ -64,6 +64,7 @@ export function useKarrio(): APIClientsContextProps {
     throw new Error("useKarrio must be used within a ClientProvider");
   }
 
+  console.log('some fucking context', context)
   // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
     if (!context.host || !context.session) {
