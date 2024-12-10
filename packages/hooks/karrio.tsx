@@ -60,7 +60,7 @@ export const ClientProvider = ({
 export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
   console.log("useKarrio: context", context);
-  if (!context) {
+  if (!context || Object.keys(context).length === 0) {
     throw new Error("useKarrio must be used within a ClientProvider");
   }
 
