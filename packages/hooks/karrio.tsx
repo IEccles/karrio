@@ -15,13 +15,6 @@ import { useSyncedSession } from "@karrio/hooks/session";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
-ReactDOM.render(
-  <ClientProvider>
-    <App />
-  </ClientProvider>,
-  document.getElementById('root')
-);
-
 type ClientProviderProps = {
   children?: React.ReactNode;
 };
