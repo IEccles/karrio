@@ -18,7 +18,7 @@ elif [[ "$*" == *gen:admin* ]]; then
     cd -
 elif [[ "$*" == *gen:openapi* ]]; then
     cd "${ROOT:?}"
-    curl http://localhost:4003/shipping-openapi -o "${ROOT:?}/schemas/openapi.yml"
+    curl https://karrio.invente.co.uk/shipping-openapi -o "${ROOT:?}/schemas/openapi.yml"
     cd -
 elif [[ "$*" == *gen:ts:cli* ]]; then
     cd "${ROOT:?}"

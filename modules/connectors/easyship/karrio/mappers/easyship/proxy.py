@@ -144,7 +144,7 @@ class Proxy(proxy.Proxy):
                     method="GET",
                     headers={
                         "Authorization": f"Bearer {self.settings.access_token}",
-                        "origin": "http://localhost:4003",
+                        "origin": "https://karrio.invente.co.uk",
                         "user-agent": "app/1.0",
                     },
                     decoder=lib.encode_base64,

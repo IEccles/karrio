@@ -4,7 +4,7 @@
 source "bin/_env"
 
 echo "> Generating openapi for docs..."
-curl http://localhost:4003/shipping-openapi?docs -o "${ROOT:?}/apps/www/openapi.yml"
+curl https://karrio.invente.co.uk/shipping-openapi?docs -o "${ROOT:?}/apps/www/openapi.yml"
 
 echo "> Generating openapi docs..."
 cd "${ROOT}/apps/www"
