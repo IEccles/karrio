@@ -75,7 +75,7 @@ export function useKarrio(): APIClientsContextProps {
   const { getHost } = useAPIMetadata();
   const { data: session } = useSyncedSession();
 
-  console.log('session', useSyncedSession())
+  console.log('session', session)
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
