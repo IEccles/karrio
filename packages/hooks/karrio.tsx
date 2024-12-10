@@ -58,17 +58,13 @@ export const ClientProvider = ({
 };
 
 export function useKarrio() {
-  try {
-    console.log('some fuckery and that', APIClientsContext)
-    return React.useContext(APIClientsContext);
-  } catch (err) {
-    console.log(err)
-    throw new Error('more more more')
+  const context = React.useContext(APIClientsContext);
+  console.log('useKarrio context:', context);
+  if (!context) {
+    throw new Error('useKarrio must be used within a ClientProvider');
   }
+  return context;
 }
-
-const fuck = useKarrio();
-console.log('exsqueeze me', fuck, fuck?.graphql)
 
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
