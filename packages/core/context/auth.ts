@@ -25,8 +25,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize({ orgId, ...credentials }: any, req: any) {
         try {
           const { metadata } = await loadMetadata();
+          console.log('valuable information', metadata, credentials)
           const auth = Auth(metadata?.HOST || (KARRIO_API as string));
           const token = await auth.authenticate(credentials as any);
+          console.log('token innit', token)
           const testMode = (headers() as unknown as UnsafeUnwrappedHeaders).get("referer")?.includes("/test");
           const org = metadata?.MULTI_ORGANIZATIONS
             ? await auth.getCurrentOrg(token.access, orgId)
