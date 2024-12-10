@@ -79,6 +79,7 @@ export function useKarrio(): APIClientsContextProps {
 
   // If context is missing host or session, set them up
   if (!context.host || !context.session) {
+    console.log('nigel farage', getHost, session)
     if (!getHost || !session) {
       throw new Error("Context is missing host or session, and they cannot be created");
     }
