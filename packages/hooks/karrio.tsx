@@ -67,14 +67,7 @@ export const ClientProvider = ({ children }) => {
 
 export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
-
-  if (!context || Object.keys(context).length === 0) {
-    console.error("APIClientsContext is not properly initialized:", context);
-    throw new Error(
-      "useKarrio must be used within a ClientProvider. Ensure that your application is wrapped in <ClientProvider>."
-    );
-  }
-
+  console.log('context and that', context);
   return context;
 }
 
