@@ -35,9 +35,6 @@ export function useUser() {
 
   if (!karrio || !karrio.graphql) {
     console.error("useKarrio context is not properly initialized:", karrio);
-    return {
-      query: { data: null, isError: true, error: new Error("Karrio context missing") },
-    };
   }
 
   const user = karrio.pageData?.user;
