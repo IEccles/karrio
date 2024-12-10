@@ -99,8 +99,7 @@ function requestInterceptor(session?: SessionType) {
 
 function setupRestClient(host: string, session?: SessionType): KarrioClient {
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
-
-  client.axios.interceptors.request.use(requestInterceptor(session));
-
+  // Ensure graphql is included in the client
+  client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
   return client;
 }
