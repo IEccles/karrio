@@ -63,7 +63,6 @@ export function useUserMutation() {
   const karrio = useKarrio();
   if (!karrio || !karrio.graphql) {
     console.error("useKarrio context is not properly initialized in useUserMutation:", karrio);
-    throw new Error("Karrio context missing in useUserMutation");
   }
   const queryClient = useQueryClient();
   const invalidateCache = () => {
