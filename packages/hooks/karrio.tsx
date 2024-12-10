@@ -37,7 +37,6 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
 export const ClientProvider = ({ children }) => {
   const { getHost, references } = useAPIMetadata();
   const { query: { data: session } } = useSyncedSession();
-  console.log(useSyncedSession())
 
   if (!getHost || !session) {
     console.error("Missing dependencies: getHost or session", {
@@ -76,6 +75,7 @@ export function useKarrio(): APIClientsContextProps {
   const { getHost } = useAPIMetadata();
   const { query: { data: session } } = useSyncedSession();
 
+  console.log('session', useSyncedSession())
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
