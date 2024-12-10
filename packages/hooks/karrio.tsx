@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   SessionType,
   KarrioClient,
@@ -11,7 +12,6 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import React from "react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -31,7 +31,7 @@ type APIClientsContextProps = KarrioClient & {
 };
 
 export const APIClientsContext = React.createContext<APIClientsContextProps>(
-  {} as any,
+  {} as APIClientsContextProps
 );
 
 export const ClientProvider = ({
@@ -43,20 +43,25 @@ export const ClientProvider = ({
     query: { data: session },
   } = useSyncedSession();
 
-  const updateClient = (ref: any, session: any) => {
+  if (!getHost || !getHost() || !session) {
+    console.error("Missing dependencies: getHost or session", {
+      getHost: getHost?.(),
+      session,
+    });
+    return <div>Loading...</div>; // Provide fallback UI
+  }
+
+  const updateClient = (ref: any, session: any): APIClientsContextProps => {
     const client = {
       ...setupRestClient(getHost(), session),
       isAuthenticated: !!session?.accessToken,
       pageData,
     };
-    console.log('updateClient:', client);
+    console.log("Updated Client Context:", client);
     return client;
   };
 
-  if (!getHost || !getHost() || !session) return <></>;
-
   const contextValue = updateClient(references, session);
-  console.log('APIClientsContext value:', contextValue);
 
   return (
     <APIClientsContext.Provider value={contextValue}>
@@ -65,24 +70,28 @@ export const ClientProvider = ({
   );
 };
 
-export function useKarrio() {
+export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
-  console.log('useKarrio context:', context, APIClientsContext);
+
   if (!context || Object.keys(context).length === 0) {
-    throw new Error('useKarrio must be used within a ClientProvider');
+    console.error("APIClientsContext is not properly initialized:", context);
+    throw new Error(
+      "useKarrio must be used within a ClientProvider. Ensure that your application is wrapped in <ClientProvider>."
+    );
   }
+
   return context;
 }
 
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
-    const testHeader: any = !!session?.testMode
+    const testHeader: any = session?.testMode
       ? { "x-test-mode": session.testMode }
       : {};
-    const authHeader: any = !!session?.accessToken
+    const authHeader: any = session?.accessToken
       ? { authorization: `Bearer ${session.accessToken}` }
       : {};
-    const orgHeader: any = !!session?.orgId
+    const orgHeader: any = session?.orgId
       ? { "x-org-id": getCookie("orgId") }
       : {};
 
@@ -99,7 +108,11 @@ function requestInterceptor(session?: SessionType) {
 
 function setupRestClient(host: string, session?: SessionType): KarrioClient {
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
-  // Ensure graphql is included in the client
+
+  client.interceptors.request.use(requestInterceptor(session));
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
+
+  console.log("Initialized RestClient:", { client, session, host });
+
   return client;
 }
