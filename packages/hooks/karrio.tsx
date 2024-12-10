@@ -50,6 +50,7 @@ export const ClientProvider = ({
 
   if (!getHost || !getHost() || !session) return <></>;
 
+  console.log("ClientProvider: contextValue", contextValue)
   return (
     <APIClientsContext.Provider value={updateClient(references, session)}>
       {children}
