@@ -34,6 +34,12 @@ export function useUser() {
   const karrio = useKarrio();
   const user = karrio.pageData?.user;
 
+  if (karrio && karrio.graphql) {
+    console.log('it does exist')
+  } else {
+    console.log('well this is some shit', karrio)
+  }
+
   // Queries
   const query = useQuery({
     queryKey: ["user"],
