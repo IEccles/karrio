@@ -51,6 +51,8 @@ export const ClientProvider = ({ children }) => {
       ...setupRestClient(getHost(), session),
       isAuthenticated: !!session?.accessToken,
       pageData,
+      host: getHost(),
+      session,
     };
     console.log("Updated Client Context:", client);
     return client;
@@ -67,9 +69,15 @@ export const ClientProvider = ({ children }) => {
 
 export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
+  if (!context) {
+    throw new Error("useKarrio must be used within a ClientProvider");
+  }
 
   // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
+    if (!context.host || !context.session) {
+      throw new Error("Context is missing host or session");
+    }
     const updatedClient = setupRestClient(context.host, context.session);
     context.graphql = updatedClient.graphql;
   }
