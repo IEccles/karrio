@@ -67,20 +67,16 @@ export const ClientProvider = ({ children }) => {
 
 export function useKarrio(): APIClientsContextProps {
   const context = React.useContext(APIClientsContext);
+
+  // Check if the graphql client is missing and set it up if necessary
+  if (!context.graphql) {
+    const updatedClient = setupRestClient(context.host, context.session);
+    context.graphql = updatedClient.graphql;
+  }
+
   console.log('context and that', context);
   return context;
 }
-
-const MyComponent = () => {
-  const karrio = useKarrio();
-
-  // Now you can use the karrio context without errors
-  console.log(karrio);
-
-  return <div>My Component</div>;
-};
-
-export default MyComponent;
 
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
@@ -105,9 +101,9 @@ function requestInterceptor(session?: SessionType) {
   };
 }
 
-function setupRestClient(host: string, session?: SessionType): KarrioClient {
+export function setupRestClient(host: string, session?: SessionType): KarrioClient {
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
-  console.log('this is the client', client, host)
+  console.log('this is the client', client, host);
 
   client.interceptors.request.use(requestInterceptor(session));
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
