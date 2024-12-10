@@ -32,24 +32,29 @@ import { useKarrio } from "./karrio";
 
 export function useUser() {
   const karrio = useKarrio();
+
+  if (!karrio || !karrio.graphql) {
+    console.error("useKarrio context is not properly initialized:", karrio);
+    return {
+      query: { data: null, isError: true, error: new Error("Karrio context missing") },
+    };
+  }
+
   const user = karrio.pageData?.user;
 
-  console.log('reehehehehe', karrio, karrio.graphql)
-  if (karrio && karrio.graphql) {
-    console.log('it does exist')
-  } else {
-    console.log('well this is some shit', karrio)
-  }
+  console.log("Karrio context in useUser:", karrio);
 
   // Queries
   const query = useQuery({
     queryKey: ["user"],
     queryFn: () => karrio.graphql.request<GetUser>(gqlstr(GET_USER)),
-    initialData: !!user ? { user } : undefined,
+    initialData: user ? { user } : undefined,
     refetchOnWindowFocus: false,
     staleTime: 300000,
-    enabled: !!user,
-    onError,
+    enabled: !!karrio.graphql,
+    onError: (error: Error) => {
+      console.error("Failed to fetch user data:", error);
+    },
   });
 
   return {
@@ -59,6 +64,10 @@ export function useUser() {
 
 export function useUserMutation() {
   const karrio = useKarrio();
+  if (!karrio || !karrio.graphql) {
+    console.error("useKarrio context is not properly initialized in useUserMutation:", karrio);
+    throw new Error("Karrio context missing in useUserMutation");
+  }
   const queryClient = useQueryClient();
   const invalidateCache = () => {
     queryClient.invalidateQueries(["user"]);
