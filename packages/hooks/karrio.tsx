@@ -78,6 +78,17 @@ export function useKarrio(): APIClientsContextProps {
   return context;
 }
 
+const MyComponent = () => {
+  const karrio = useKarrio();
+
+  // Now you can use the karrio context without errors
+  console.log(karrio);
+
+  return <div>My Component</div>;
+};
+
+export default MyComponent;
+
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
     const testHeader: any = session?.testMode
