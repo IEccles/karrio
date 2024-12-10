@@ -34,6 +34,7 @@ export function useUser() {
   const karrio = useKarrio();
   const user = karrio.pageData?.user;
 
+  console.log('reehehehehe', karrio, karrio.graphql)
   if (karrio && karrio.graphql) {
     console.log('it does exist')
   } else {
