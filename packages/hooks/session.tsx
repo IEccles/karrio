@@ -21,7 +21,8 @@ export function useSyncedSession() {
     { refetchInterval: 120000 },
   );
 
-  console.log('this is the query shite', query)
+  const fuckery = getSession();
+  console.log('this is the query shite', query.data, query)
 
   return {
     query,
