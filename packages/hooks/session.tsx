@@ -21,6 +21,8 @@ export function useSyncedSession() {
     { refetchInterval: 120000 },
   );
 
+  console.log('This is the session query', query)
+
   return {
     query,
   } as any & { query: { data: SessionType } };
