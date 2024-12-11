@@ -70,17 +70,18 @@ export const ClientProvider = ({ children }) => {
 };
 
 export async function useKarrio(): APIClientsContextProps {
-  const context = React.useContext(APIClientsContext);
-  const { getHost } = await useAPIMetadata();
+  const creation = React.createContext(APIClientsContext)
+  const context = React.useContext(creation);
+  const { getHost } = useAPIMetadata();
 
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
-  if (!context.host || !context.session) {
+  if (!context.host) {
     const host = await getHost();
-    console.log('i actually swear to god', host)
+    console.log('Fetched host:', host);
     if (!host) {
-      throw new Error("Context is missing host or session, and they cannot be created");
+      throw new Error("Context is missing host, and it cannot be created");
     }
     context.host = host;
   }
