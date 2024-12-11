@@ -15,7 +15,7 @@ export function useSyncedSession() {
     ['session'],
     async () => {
       const session = await getSession();
-      console.log('fetch session', new Date(), session);
+      console.log('teehe', session)
       return session as SessionType;
     },
     { refetchInterval: 120000 }
