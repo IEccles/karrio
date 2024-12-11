@@ -70,66 +70,25 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-export function useFetchSession() {
-  const [session, setSession] = useState<SessionType | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    const fetchSessionData = async () => {
-      try {
-        const sessionData = await getSession();
-        if (!sessionData) {
-          throw new Error("Session data is null or undefined.");
-        }
-        setSession(sessionData as SessionType);
-        console.log("Fetched session data:", sessionData);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessionData();
-  }, []);
-
-  return { session, loading, error };
-}
-
-export function useKarrio(): APIClientsContextProps {
+export async function useKarrio(): APIClientsContextProps {
   const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
-  const { getHost } = useAPIMetadata();
-  const { session, loading, error } = useFetchSession();
+  const { getHost } = await useAPIMetadata();
 
-  if (loading) {
-    console.log("useKarrio: Loading session data...");
-    return context; // or return a loading state
-  }
-
-  if (error || !session) {
-    console.error("useKarrio: Failed to fetch session data", error);
-    throw new Error("Failed to fetch session data");
-  }
-
-  console.log('useKarrio: session', session);
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
   if (!context.host || !context.session) {
-    const host = getHost();
-    if (!host || !session) {
+    const host = await getHost();
+    if (!host) {
       throw new Error("Context is missing host or session, and they cannot be created");
     }
     context.host = host;
-    context.session = session;
   }
 
   // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
-    const updatedClient = setupRestClient(context.host, context.session);
+    const updatedClient = setupRestClient(context.host);
     context.graphql = updatedClient.graphql;
   }
 
