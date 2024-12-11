@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   SessionType,
   KarrioClient,
@@ -12,6 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
+import { getSession } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -69,11 +70,31 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
+async function fetchSession(): Promise<SessionType> {
+  const session = await getSession();
+  if (!session) {
+    throw new Error("Failed to fetch session");
+  }
+  return session as SessionType;
+}
+
 export function useKarrio(): APIClientsContextProps {
   const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { data: session } = useSyncedSession();
+  const [session, setSession] = useState<SessionType | null>(null);
+
+  useEffect(() => {
+    async function getSession() {
+      try {
+        const sessionData = await fetchSession();
+        setSession(sessionData);
+      } catch (error) {
+        console.error('Failed to fetch session:', error);
+      }
+    }
+    getSession();
+  }, []);
 
   console.log('session', session)
   console.log("useKarrio: context", context);
