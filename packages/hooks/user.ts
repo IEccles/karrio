@@ -89,7 +89,7 @@ export function useUserMutation() {
 
   const registerUser = useMutation(
     (data: RegisterUserMutationInput) => {
-      console.log("RegisterUser mutation data:", data);
+      console.log("RegisterUser mutation data:", data, REGISTER_USER);
       return karrio.graphql.request<register_user>(gqlstr(REGISTER_USER), { data });
     },
     { onSuccess: invalidateCache, onError },
