@@ -72,7 +72,11 @@ export const ClientProvider = ({ children }) => {
 
 async function fetchSession(): Promise<SessionType | null> {
   try {
-    const sessionData = await getSession();
+    const response = await fetch('/api/session');
+    if (!response.ok) {
+      throw new Error("Failed to fetch session data.");
+    }
+    const sessionData = await response.json();
     if (!sessionData) {
       throw new Error("Session data is null or undefined.");
     }
@@ -93,9 +97,18 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
 
   useEffect(() => {
     const fetchSessionData = async () => {
-      const sessionData = await fetchSession();
-      setSession(sessionData);
-      setLoading(false);
+      try {
+        const sessionData = await fetchSession();
+        if (!sessionData) {
+          throw new Error("Session data is null or undefined.");
+        }
+        setSession(sessionData);
+        console.log("Fetched session data:", sessionData);
+      } catch (error) {
+        console.error("Failed to fetch session:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSessionData();
