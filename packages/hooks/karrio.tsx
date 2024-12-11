@@ -121,13 +121,9 @@ function requestInterceptor(session?: SessionType) {
 
 export function setupRestClient(host: string, session?: SessionType): KarrioClient {
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
-  console.log('this is the client', client, host);
 
   // client.interceptors.request.use(requestInterceptor(session));
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
-
-  console.log("Initialized RestClient:", { client, session, host });
-  console.log("GraphQL Client:", client.graphql);
 
   return client;
 }
