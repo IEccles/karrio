@@ -12,7 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -70,49 +70,20 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-async function fetchSession(): Promise<SessionType | null> {
-  try {
-    const response = await fetch('/api/session');
-    if (!response.ok) {
-      throw new Error("Failed to fetch session data.");
-    }
-    const sessionData = await response.json();
-    if (!sessionData) {
-      throw new Error("Session data is null or undefined.");
-    }
-    console.log("Fetched session data:", sessionData);
-    return sessionData as SessionType;
-  } catch (error) {
-    console.error("Failed to fetch session:", error);
-    return null;
-  }
-}
-
 export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const [session, setSession] = useState<SessionType | null>(null);
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSessionData = async () => {
-      try {
-        const sessionData = await fetchSession();
-        if (!sessionData) {
-          throw new Error("Session data is null or undefined.");
-        }
-        setSession(sessionData);
-        console.log("Fetched session data:", sessionData);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessionData();
-  }, []);
+    if (status === 'loading') {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [status]);
 
   if (loading) {
     return context; // or return a loading state
@@ -132,7 +103,7 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
       throw new Error("Context is missing host or session, and they cannot be created");
     }
     context.host = host;
-    context.session = session;
+    context.session = session as SessionType;
   }
 
   // Check if the graphql client is missing and set it up if necessary
@@ -143,6 +114,29 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
 
   console.log('context and that', context);
   return context;
+}
+
+function requestInterceptor(session?: SessionType) {
+  return (config: any = { headers: {} }) => {
+    const testHeader: any = !!session?.testMode
+      ? { "x-test-mode": session.testMode }
+      : {};
+    const authHeader: any = !!session?.accessToken
+      ? { authorization: `Bearer ${session.accessToken}` }
+      : {};
+    const orgHeader: any = !!session?.orgId
+      ? { "x-org-id": getCookie("orgId") }
+      : {};
+
+    config.headers = {
+      ...config.headers,
+      ...authHeader,
+      ...orgHeader,
+      ...testHeader,
+    };
+
+    return config;
+  };
 }
 
 export function setupRestClient(host: string, session?: SessionType): KarrioClient {
