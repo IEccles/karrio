@@ -77,7 +77,7 @@ export async function useKarrio(): APIClientsContextProps {
 
   // If context is missing host or session, set them up
   if (!context.host) {
-    const host = 'https://app.karrio.invente.co.uk'
+    const host = 'https://karrio.invente.co.uk'
     console.log('Fetched host:', host);
     if (!host) {
       throw new Error("Context is missing host, and it cannot be created");
@@ -122,7 +122,7 @@ export function setupRestClient(host: string, session?: SessionType): KarrioClie
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
   console.log('this is the client', client, host);
 
-  // client.interceptors.request.use(requestInterceptor(session));
+  client.interceptors.request.use(requestInterceptor(session));
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
 
   console.log("Initialized RestClient:", { client, session, host });
