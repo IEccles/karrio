@@ -58,8 +58,11 @@ export function useUser() {
 export function useUserMutation() {
   const karrio = useKarrio();
   if (!karrio || !karrio.graphql) {
-    console.error("useKarrio context is not properly initialized in useUserMutation:", karrio.graphql);
+    console.error("useKarrio context is not properly initialized in useUserMutation:", karrio);
   }
+  console.log('Karrio context:', karrio);
+  console.log('Karrio graphql client:', karrio.graphql);
+
   const queryClient = useQueryClient();
   const invalidateCache = () => {
     queryClient.invalidateQueries(["user"]);
@@ -67,64 +70,90 @@ export function useUserMutation() {
 
   // Mutations
   const updateUser = useMutation(
-    (data: UpdateUserInput) =>
-      karrio.graphql.request<update_user>(gqlstr(UPDATE_USER), { data }),
+    (data: UpdateUserInput) => {
+      console.log("UpdateUser mutation data:", data);
+      return karrio.graphql.request<update_user>(gqlstr(UPDATE_USER), { data });
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const closeAccount = useMutation(
-    () =>
-      karrio.graphql.request<update_user>(gqlstr(UPDATE_USER), {
+    () => {
+      console.log("CloseAccount mutation");
+      return karrio.graphql.request<update_user>(gqlstr(UPDATE_USER), {
         data: { is_active: false },
-      }),
+      });
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const registerUser = useMutation(
-    (data: RegisterUserMutationInput) =>
-      karrio.graphql.request<register_user>(gqlstr(REGISTER_USER), { data }),
+    (data: RegisterUserMutationInput) => {
+      console.log("RegisterUser mutation data:", data);
+      return karrio.graphql.request<register_user>(gqlstr(REGISTER_USER), { data });
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const requestEmailChange = useMutation(
-    (data: RequestEmailChangeMutationInput) =>
-      karrio.graphql.request<request_email_change>(
+    (data: RequestEmailChangeMutationInput) => {
+      console.log("RequestEmailChange mutation data:", data);
+      return karrio.graphql.request<request_email_change>(
         gqlstr(REQUEST_EMAIL_CHANGE),
         { data },
-      ),
+      );
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const confirmEmailChange = useMutation(
-    (data: ConfirmEmailChangeMutationInput) =>
-      karrio.graphql.request<confirm_email_change>(
+    (data: ConfirmEmailChangeMutationInput) => {
+      console.log("ConfirmEmailChange mutation data:", data);
+      return karrio.graphql.request<confirm_email_change>(
         gqlstr(CONFIRM_EMAIL_CHANGE),
         { data },
-      ),
+      );
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const changePassword = useMutation(
-    (data: ChangePasswordMutationInput) =>
-      karrio.graphql.request<change_password>(gqlstr(CHANGE_PASSWORD), {
+    (data: ChangePasswordMutationInput) => {
+      console.log("ChangePassword mutation data:", data);
+      return karrio.graphql.request<change_password>(gqlstr(CHANGE_PASSWORD), {
         data,
-      }),
+      });
+    },
     { onSuccess: invalidateCache, onError },
   );
+
   const confirmPasswordReset = useMutation(
-    (data: ConfirmPasswordResetMutationInput) =>
-      karrio.graphql.request<confirm_password_reset>(
+    (data: ConfirmPasswordResetMutationInput) => {
+      console.log("ConfirmPasswordReset mutation data:", data);
+      return karrio.graphql.request<confirm_password_reset>(
         gqlstr(CONFIRM_PASSWORD_RESET),
         { data },
-      ),
+      );
+    },
     { onSuccess: invalidateCache },
   );
+
   const confirmEmail = useMutation(
-    (data: ConfirmEmailMutationInput) =>
-      karrio.graphql.request<confirm_email>(gqlstr(CONFIRM_EMAIL), { data }),
+    (data: ConfirmEmailMutationInput) => {
+      console.log("ConfirmEmail mutation data:", data);
+      return karrio.graphql.request<confirm_email>(gqlstr(CONFIRM_EMAIL), { data });
+    },
     { onSuccess: invalidateCache },
   );
+
   const requestPasswordReset = useMutation(
-    (data: RequestPasswordResetMutationInput) =>
-      karrio.graphql.request<request_password_reset>(
+    (data: RequestPasswordResetMutationInput) => {
+      console.log("RequestPasswordReset mutation data:", data);
+      return karrio.graphql.request<request_password_reset>(
         gqlstr(REQUEST_PASSWORD_RESET),
         { data },
-      ),
+      );
+    },
     { onSuccess: invalidateCache },
   );
 
