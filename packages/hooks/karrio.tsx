@@ -88,57 +88,48 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
+  const [session, setSession] = useState<SessionType | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch the session synchronously
-  const session = await fetchSession();
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      const sessionData = await fetchSession();
+      setSession(sessionData);
+      setLoading(false);
+    };
 
-  if (!session) {
-    throw new Error("Failed to fetch session data.");
+    fetchSessionData();
+  }, []);
+
+  if (loading) {
+    return context; // or return a loading state
   }
 
-  console.log("Session successfully fetched:", session);
+  if (!session) {
+    throw new Error("Failed to fetch session data");
+  }
 
-  // Ensure context host and session setup
+  console.log('session', session);
+  console.log("useKarrio: context", context);
+
+  // If context is missing host or session, set them up
   if (!context.host || !context.session) {
     const host = getHost();
-    if (!host) {
-      throw new Error("Failed to get host.");
+    if (!host || !session) {
+      throw new Error("Context is missing host or session, and they cannot be created");
     }
     context.host = host;
     context.session = session;
   }
 
-  // Ensure GraphQL client setup
+  // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
     const updatedClient = setupRestClient(context.host, context.session);
     context.graphql = updatedClient.graphql;
   }
 
-  console.log("Karrio context:", context);
+  console.log('context and that', context);
   return context;
-}
-
-function requestInterceptor(session?: SessionType) {
-  return (config: any = { headers: {} }) => {
-    const testHeader: any = session?.testMode
-      ? { "x-test-mode": session.testMode }
-      : {};
-    const authHeader: any = session?.accessToken
-      ? { authorization: `Bearer ${session.accessToken}` }
-      : {};
-    const orgHeader: any = session?.orgId
-      ? { "x-org-id": getCookie("orgId") }
-      : {};
-
-    config.headers = {
-      ...config.headers,
-      ...authHeader,
-      ...orgHeader,
-      ...testHeader,
-    };
-
-    return config;
-  };
 }
 
 export function setupRestClient(host: string, session?: SessionType): KarrioClient {
