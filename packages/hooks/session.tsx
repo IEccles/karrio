@@ -12,20 +12,18 @@ import React from "react";
 export function useSyncedSession() {
   // Queries
   const query = useQuery<SessionType>(
-    ["session"],
-    () =>
-      getSession().then((session) => {
-        console.log("fetch session", new Date());
-        return session;
-      }),
-    { refetchInterval: 120000 },
+    ['session'],
+    async () => {
+      const session = await getSession();
+      console.log('fetch session', new Date(), session);
+      return session as SessionType;
+    },
+    { refetchInterval: 120000 }
   );
 
   console.log('This is the session query', query);
 
-  return {
-    query,
-  };
+  return query;
 }
 
 export const NextSession = React.createContext<Session | null | undefined>(
