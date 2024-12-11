@@ -98,22 +98,23 @@ export function useFetchSession() {
   return { session, loading, error };
 }
 
-export async function useKarrio(): Promise<APIClientsContextProps> {
-  const creation = React.createContext(APIClientsContext);
+export function useKarrio(): APIClientsContextProps {
+  const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { session, loading, error } = await useFetchSession();
+  const { session, loading, error } = useFetchSession();
 
   if (loading) {
+    console.log("useKarrio: Loading session data...");
     return context; // or return a loading state
   }
 
   if (error || !session) {
-    console.log(error, session)
+    console.error("useKarrio: Failed to fetch session data", error);
     throw new Error("Failed to fetch session data");
   }
 
-  console.log('session', session);
+  console.log('useKarrio: session', session);
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
@@ -132,7 +133,7 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
     context.graphql = updatedClient.graphql;
   }
 
-  console.log('context and that', context);
+  console.log('useKarrio: context and that', context);
   return context;
 }
 
