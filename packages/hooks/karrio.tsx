@@ -74,9 +74,20 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { data: session, status } = await useSession();
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
 
-  console.log('please just something', session)
+  useEffect(() => {
+    if (status === 'loading') {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [status]);
+
+  if (loading) {
+    return context; // or return a loading state
+  }
 
   if (!session) {
     throw new Error("Failed to fetch session data");
