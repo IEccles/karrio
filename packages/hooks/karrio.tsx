@@ -70,32 +70,30 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-async function fetchSession(): Promise<SessionType> {
-  const session = await getSession();
-  console.log('session fetch function', session)
-  if (!session) {
-    throw new Error("Failed to fetch session");
-  }
-  return session as SessionType;
-}
-
-export function useKarrio(): APIClientsContextProps {
+export async function useKarrio(): APIClientsContextProps {
   const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
   const [session, setSession] = useState<SessionType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getSession() {
+    async function fetchSession() {
       try {
-        const sessionData = await fetchSession();
-        setSession(sessionData);
+        const sessionData = await getSession();
+        setSession(sessionData as SessionType);
       } catch (error) {
         console.error('Failed to fetch session:', error);
+      } finally {
+        setLoading(false);
       }
     }
-    getSession();
+    fetchSession();
   }, []);
+
+  if (loading) {
+    return context;
+  }
 
   console.log("useKarrio: context", context);
 
