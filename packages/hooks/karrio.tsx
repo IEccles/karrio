@@ -70,7 +70,7 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-export async function useKarrio(): APIClientsContextProps {
+export function useKarrio(): APIClientsContextProps {
   const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
 
