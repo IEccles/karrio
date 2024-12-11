@@ -71,10 +71,8 @@ export const ClientProvider = ({ children }) => {
 };
 
 export function useKarrio(): APIClientsContextProps {
-  const creation = React.createContext(APIClientsContext)
-  const context = React.useContext(creation);
+  const context = React.useContext(APIClientsContext);
 
-  // If context is missing host or session, set them up
   if (!context.host) {
     const host = 'https://karrio.invente.co.uk'
     console.log('Fetched host:', host);
@@ -87,7 +85,7 @@ export function useKarrio(): APIClientsContextProps {
   // Check if the graphql client is missing and set it up if necessary
   if (!context.graphql) {
     const updatedClient = setupRestClient(context.host);
-    context.graphql = updatedClient.graphql;
+    context.graphql = updatedClient;
   }
 
   return context;
@@ -116,11 +114,26 @@ function requestInterceptor(session?: SessionType) {
   };
 }
 
-export function setupRestClient(host: string, session?: SessionType): KarrioClient {
-  const client = new KarrioClient({ basePath: url$`${host || ""}` });
+export function setupRestClient(host: string, session?: SessionType): GraphQLClient {
+  const headers: any = {};
 
-  // client.interceptors.request.use(requestInterceptor(session));
-  client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
+  if (session?.testMode) {
+    headers['x-test-mode'] = session.testMode;
+  }
+  if (session?.accessToken) {
+    headers['authorization'] = `Bearer ${session.accessToken}`;
+  }
+  if (session?.orgId) {
+    headers['x-org-id'] = getCookie('orgId');
+  }
+
+  const endpoint = `${host}/graphql`;
+
+  const client = new GraphQLClient(endpoint, {
+    headers,
+  });
+
+  console.log('setupRestClient: Initialized GraphQLClient:', { client, session, host });
 
   return client;
 }
