@@ -70,26 +70,46 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
+export function useFetchSession() {
+  const [session, setSession] = useState<SessionType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const sessionData = await getSession();
+        if (!sessionData) {
+          throw new Error("Session data is null or undefined.");
+        }
+        setSession(sessionData as SessionType);
+        console.log("Fetched session data:", sessionData);
+      } catch (error) {
+        console.error("Failed to fetch session:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSessionData();
+  }, []);
+
+  return { session, loading, error };
+}
+
 export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { data: session, status } = useSession();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (status === 'loading') {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [status]);
+  const { session, loading, error } = await useFetchSession();
 
   if (loading) {
     return context; // or return a loading state
   }
 
-  if (!session) {
+  if (error || !session) {
+    console.log(error, session)
     throw new Error("Failed to fetch session data");
   }
 
