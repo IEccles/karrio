@@ -11,21 +11,21 @@ import React from "react";
 
 export function useSyncedSession() {
   // Queries
-  const query = useQuery(
+  const query = useQuery<SessionType>(
     ["session"],
     () =>
-      getSession().then((_) => {
+      getSession().then((session) => {
         console.log("fetch session", new Date());
-        return _;
+        return session;
       }),
     { refetchInterval: 120000 },
   );
 
-  console.log('This is the session query', query)
+  console.log('This is the session query', query);
 
   return {
     query,
-  } as any & { query: { data: SessionType } };
+  };
 }
 
 export const NextSession = React.createContext<Session | null | undefined>(
