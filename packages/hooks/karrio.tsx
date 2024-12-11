@@ -80,6 +80,7 @@ export async function useKarrio(): APIClientsContextProps {
   // If context is missing host or session, set them up
   if (!context.host || !context.session) {
     const host = await getHost();
+    console.log('i actually swear to god', host)
     if (!host) {
       throw new Error("Context is missing host or session, and they cannot be created");
     }
