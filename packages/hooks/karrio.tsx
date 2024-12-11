@@ -116,27 +116,11 @@ function requestInterceptor(session?: SessionType) {
   };
 }
 
-export function setupRestClient(host: string, session?: SessionType): GraphQLClient {
-  const headers: any = {};
+export function setupRestClient(host: string, session?: SessionType): KarrioClient {
+  const client = new KarrioClient({ basePath: url$`${host || ""}` });
 
-  if (session?.testMode) {
-    headers['x-test-mode'] = session.testMode;
-  }
-  if (session?.accessToken) {
-    headers['authorization'] = `Bearer ${session.accessToken}`;
-  }
-  if (session?.orgId) {
-    headers['x-org-id'] = getCookie('orgId');
-  }
-
-  const endpoint = `${host}/graphql`;
-  console.log('setupRestClient: Initializing GraphQLClient with endpoint:', endpoint);
-
-  const client = new GraphQLClient(endpoint, {
-    headers,
-  });
-
-  console.log('setupRestClient: Initialized GraphQLClient:', { client, session, host });
+  // client.interceptors.request.use(requestInterceptor(session));
+  client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
 
   return client;
 }
