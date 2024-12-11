@@ -81,6 +81,7 @@ export async function useKarrio(): APIClientsContextProps {
     async function fetchSession() {
       try {
         const sessionData = await getSession();
+        console.log('Fetched session data:', sessionData);
         setSession(sessionData as SessionType);
       } catch (error) {
         console.error('Failed to fetch session:', error);
@@ -92,14 +93,18 @@ export async function useKarrio(): APIClientsContextProps {
   }, []);
 
   if (loading) {
-    return context;
+    return context; // or return a loading state
   }
 
+  if (!session) {
+    throw new Error("Failed to fetch session data");
+  }
+
+  console.log('session', session);
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
   if (!context.host || !context.session) {
-    console.log('nigel farage', getHost, session)
     if (!getHost || !session) {
       throw new Error("Context is missing host or session, and they cannot be created");
     }
