@@ -81,6 +81,7 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
     const fetchSessionData = async () => {
       try {
         const sessionData = await getServerSession();
+        console.log('session data', sessionData)
         if (!sessionData) {
           throw new Error("Session data is null or undefined.");
         }
