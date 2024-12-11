@@ -72,6 +72,7 @@ export const ClientProvider = ({ children }) => {
 
 async function fetchSession(): Promise<SessionType> {
   const session = await getSession();
+  console.log('session fetch function', session)
   if (!session) {
     throw new Error("Failed to fetch session");
   }
@@ -96,7 +97,6 @@ export function useKarrio(): APIClientsContextProps {
     getSession();
   }, []);
 
-  console.log('session', session)
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
