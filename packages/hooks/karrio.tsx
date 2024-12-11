@@ -12,7 +12,6 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import { getSession  } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -71,8 +70,7 @@ export const ClientProvider = ({ children }) => {
 };
 
 export async function useKarrio(): APIClientsContextProps {
-  const creation = React.createContext(APIClientsContext)
-  const context = React.useContext(creation);
+  const context = React.useContext(APIClientsContext);
   const { getHost } = await useAPIMetadata();
 
   console.log("useKarrio: context", context);
