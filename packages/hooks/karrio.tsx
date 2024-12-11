@@ -12,7 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import { useSession  } from "next-auth/react";
+import { getSession  } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
