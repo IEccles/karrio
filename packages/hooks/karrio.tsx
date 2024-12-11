@@ -77,6 +77,8 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
 
+  console.log('this is da session', session)
+
   useEffect(() => {
     if (status === 'loading') {
       setLoading(true);
