@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
+import React, { useEffect} from "react";
 import {
   SessionType,
   KarrioClient,
@@ -12,7 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import { useSession } from "next-auth/react";
+import { getServerSession  } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -74,28 +74,14 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { data: session, status } = useSession();
-  const [loading, setLoading] = useState(true);
+  const session = getServerSession();
 
-  console.log('this is da session', session)
-
-  useEffect(() => {
-    if (status === 'loading') {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [status]);
-
-  if (loading) {
-    return context; // or return a loading state
-  }
+  console.log('session', session);
 
   if (!session) {
     throw new Error("Failed to fetch session data");
   }
 
-  console.log('session', session);
   console.log("useKarrio: context", context);
 
   // If context is missing host or session, set them up
