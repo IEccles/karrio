@@ -12,7 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
-import { getServerSession  } from "next-auth/react";
+import { useSession  } from "next-auth/react";
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -74,7 +74,9 @@ export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { query: { data: session } } = useSyncedSession();
+  const { data: session, status } = await useSession();
+
+  console.log('please just something', session)
 
   if (!session) {
     throw new Error("Failed to fetch session data");
