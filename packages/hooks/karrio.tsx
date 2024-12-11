@@ -12,6 +12,7 @@ import { get_organizations_organizations } from "@karrio/types/graphql/ee";
 import { getCookie, KARRIO_API, logger, url$ } from "@karrio/lib";
 import { useAPIMetadata } from "@karrio/hooks/api-metadata";
 import { useSyncedSession } from "@karrio/hooks/session";
+import { GraphQLClient } from 'graphql-request';
 
 logger.debug("API clients initialized for Server: " + KARRIO_API);
 
@@ -122,7 +123,7 @@ export function setupRestClient(host: string, session?: SessionType): KarrioClie
   const client = new KarrioClient({ basePath: url$`${host || ""}` });
   console.log('this is the client', client, host);
 
-  client.interceptors.request.use(requestInterceptor(session));
+  // client.interceptors.request.use(requestInterceptor(session));
   client.graphql = new GraphQLClient({ endpoint: `${host}/graphql` });
 
   console.log("Initialized RestClient:", { client, session, host });
