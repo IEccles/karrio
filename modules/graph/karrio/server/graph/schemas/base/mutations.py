@@ -32,7 +32,6 @@ import karrio.server.graph.utils as utils
 import karrio.server.user.models as auth
 import karrio.server.iam.models as iam
 import karrio.lib as lib
-import karrio.server.user.forms as user_forms
 
 logger = logging.getLogger(__name__)
 
@@ -183,25 +182,38 @@ class DeleteAPIKeyMutation(utils.BaseMutation):
 
 
 @strawberry.type
-class RegisterUserMutation(utils.BaseMutation):
+class RequestEmailChangeMutation(utils.BaseMutation):
     user: typing.Optional[types.UserType] = None
 
     @staticmethod
+    @utils.authentication_required
+    @utils.authorization_required()
+    @utils.password_required
     def mutate(
-        info: Info, **input: inputs.RegisterUserMutationInput
-    ) -> "RegisterUserMutation":
-        if settings.ALLOW_SIGNUP == False:
-            raise Exception(
-                "Signup is not allowed. "
-                "Please contact your administrator to create an account."
-            )
+        info: Info, email: str, password: str, redirect_url: str
+    ) -> "RequestEmailChangeMutation":
         try:
-            form = user_forms.SignUpForm(input)
-            user = form.save()
-            return RegisterUserMutation(user=user)  # type:ignore
+            token = ConfirmationToken.for_data(
+                user=info.context.request.user,
+                data=dict(new_email=email),
+            )
+
+            send_email(
+                emails=[email],
+                subject="Confirm your new email address",
+                email_template="karrio/email_change_email.html",
+                text_template="karrio/email_change_email.txt",
+                context=dict(
+                    token=token,
+                    link=redirect_url,
+                ),
+                expiry=(datetime.datetime.now() + datetime.timedelta(hours=2)),
+            )
         except Exception as e:
             logger.exception(e)
             raise e
+
+        return RequestEmailChangeMutation(user=info.context.request.user)  # type:ignore
 
 
 @strawberry.type
