@@ -34,7 +34,7 @@ import karrio.server.iam.models as iam
 import karrio.lib as lib
 
 logger = logging.getLogger(__name__)
-
+print(dir(forms))
 
 @strawberry.type
 class UserUpdateMutation(utils.BaseMutation):
