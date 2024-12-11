@@ -70,41 +70,44 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-export async function useKarrio(): APIClientsContextProps {
-  const creation = React.createContext(APIClientsContext)
+export function useKarrio(): APIClientsContextProps {
+  const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
   const [session, setSession] = useState<SessionType | null>(null);
   const [loading, setLoading] = useState(true);
 
-  await useEffect(() => {
+  useEffect(() => {
     const fetchSession = async () => {
       try {
         const sessionData = await getSession();
         setSession(sessionData as SessionType);
-        console.log('Fetched session data:', sessionData);
+        console.log("Fetched session data:", sessionData);
       } catch (error) {
-        console.error('Failed to fetch session:', error);
+        console.error("Failed to fetch session:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchSession();
-  }, []);
+  }, []); // Dependency array ensures it runs once on mount
 
   if (loading) {
-    return context; // or return a loading state
+    return {
+      ...context,
+      loading: true, // Optional: Include loading state in the returned object
+    };
   }
 
   if (!session) {
     throw new Error("Failed to fetch session data");
   }
 
-  console.log('session', session);
+  console.log("session", session);
   console.log("useKarrio: context", context);
 
-  // If context is missing host or session, set them up
+  // Set up host and session in the context if missing
   if (!context.host || !context.session) {
     if (!getHost || !session) {
       throw new Error("Context is missing host or session, and they cannot be created");
@@ -113,13 +116,13 @@ export async function useKarrio(): APIClientsContextProps {
     context.session = session;
   }
 
-  // Check if the graphql client is missing and set it up if necessary
+  // Check if the GraphQL client is missing and set it up if necessary
   if (!context.graphql) {
     const updatedClient = setupRestClient(context.host, context.session);
     context.graphql = updatedClient.graphql;
   }
 
-  console.log('context and that', context);
+  console.log("context and that", context);
   return context;
 }
 
