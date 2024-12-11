@@ -70,59 +70,51 @@ export const ClientProvider = ({ children }) => {
   );
 };
 
-export function useKarrio(): APIClientsContextProps {
+async function fetchSession(): Promise<SessionType | null> {
+  try {
+    const sessionData = await getSession();
+    if (!sessionData) {
+      throw new Error("Session data is null or undefined.");
+    }
+    console.log("Fetched session data:", sessionData);
+    return sessionData as SessionType;
+  } catch (error) {
+    console.error("Failed to fetch session:", error);
+    return null;
+  }
+}
+
+export async function useKarrio(): Promise<APIClientsContextProps> {
   const creation = React.createContext(APIClientsContext);
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const [session, setSession] = useState<SessionType | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const sessionData = await getSession();
-        setSession(sessionData as SessionType);
-        console.log("Fetched session data:", sessionData);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSession();
-  }, []); // Dependency array ensures it runs once on mount
-
-  if (loading) {
-    return {
-      ...context,
-      loading: true, // Optional: Include loading state in the returned object
-    };
-  }
+  // Fetch the session synchronously
+  const session = await fetchSession();
 
   if (!session) {
-    throw new Error("Failed to fetch session data");
+    throw new Error("Failed to fetch session data.");
   }
 
-  console.log("session", session);
-  console.log("useKarrio: context", context);
+  console.log("Session successfully fetched:", session);
 
-  // Set up host and session in the context if missing
+  // Ensure context host and session setup
   if (!context.host || !context.session) {
-    if (!getHost || !session) {
-      throw new Error("Context is missing host or session, and they cannot be created");
+    const host = getHost();
+    if (!host) {
+      throw new Error("Failed to get host.");
     }
-    context.host = getHost();
+    context.host = host;
     context.session = session;
   }
 
-  // Check if the GraphQL client is missing and set it up if necessary
+  // Ensure GraphQL client setup
   if (!context.graphql) {
     const updatedClient = setupRestClient(context.host, context.session);
     context.graphql = updatedClient.graphql;
   }
 
-  console.log("context and that", context);
+  console.log("Karrio context:", context);
   return context;
 }
 
