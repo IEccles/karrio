@@ -77,8 +77,8 @@ export async function useKarrio(): APIClientsContextProps {
   const [session, setSession] = useState<SessionType | null>(null);
   const [loading, setLoading] = useState(true);
 
-  await useEffect(async () => {
-    async function fetchSession() {
+  useEffect(() => {
+    const fetchSession = async () => {
       try {
         const sessionData = await getSession();
         setSession(sessionData as SessionType);
@@ -88,8 +88,9 @@ export async function useKarrio(): APIClientsContextProps {
       } finally {
         setLoading(false);
       }
-    }
-    await fetchSession();
+    };
+
+    fetchSession();
   }, []);
 
   if (loading) {
