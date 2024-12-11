@@ -73,7 +73,7 @@ export function useKarrio(): APIClientsContextProps {
   const creation = React.createContext(APIClientsContext)
   const context = React.useContext(creation);
   const { getHost } = useAPIMetadata();
-  const { data: session } = useSyncedSession();
+  const { query: { data: session } } = useSyncedSession();
 
   console.log('session', session)
   console.log("useKarrio: context", context);
