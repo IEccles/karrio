@@ -30,13 +30,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gqlstr, onError } from "@karrio/lib";
 import { useKarrio, useKarrioLogin, setupRestClient } from "./karrio";
 
-function getCookie(name: string): string | null {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-  return null;
-}
-
 export function useUser() {
   const karrio = useKarrioLogin();
 
@@ -53,23 +46,7 @@ export function useUser() {
         throw new Error("GraphQL client is not initialized");
       }
 
-      // Manually set the headers if they are undefined
-      let headers = karrio.graphql.options?.headers;
-      if (!headers) {
-        headers = {};
-        if (karrio.session?.accessToken) {
-          headers['authorization'] = `Bearer ${karrio.session.accessToken}`;
-        }
-        if (karrio.session?.testMode) {
-          headers['x-test-mode'] = karrio.session.testMode;
-        }
-        if (karrio.session?.orgId) {
-          headers['x-org-id'] = getCookie('orgId');
-        }
-        karrio.graphql.setHeaders(headers);
-      }
-
-      console.log('useUser: GraphQL request headers:', headers);
+      console.log('some shit about user', GET_USER)
 
       const response = await karrio.graphql.request<GetUser>(gqlstr(GET_USER));
       console.log('useUser: GraphQL response:', response);
