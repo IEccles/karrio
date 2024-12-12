@@ -27,14 +27,13 @@ import karrio.server.providers.models as providers
 import karrio.server.manager.models as manager
 import karrio.server.core.gateway as gateway
 import karrio.server.graph.models as graph
-import karrio.server.graph.forms as forms
+import karrio.server.user.forms as forms
 import karrio.server.graph.utils as utils
 import karrio.server.user.models as auth
 import karrio.server.iam.models as iam
 import karrio.lib as lib
 
 logger = logging.getLogger(__name__)
-print(dir(forms))
 
 @strawberry.type
 class UserUpdateMutation(utils.BaseMutation):
