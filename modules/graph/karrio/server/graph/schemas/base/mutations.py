@@ -258,8 +258,11 @@ class RegisterUserMutation(utils.BaseMutation):
 
         try:
             form = forms.SignUpForm(input)
-            user = form.save()
+            if not form.is_valid():
+                logger.error(f"Form errors: {form.errors}")
+                raise Exception(f"Form errors: {form.errors}")
 
+            user = form.save()
             return RegisterUserMutation(user=user)  # type:ignore
         except Exception as e:
             logger.exception(e)
