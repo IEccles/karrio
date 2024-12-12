@@ -79,6 +79,10 @@ export function useKarrio(): APIClientsContextProps {
   return context;
 }
 
+export function useKarrioLogin() {
+  return React.useContext(APIClientsContext);
+}
+
 function requestInterceptor(session?: SessionType) {
   return (config: any = { headers: {} }) => {
     const testHeader: any = !!session?.testMode

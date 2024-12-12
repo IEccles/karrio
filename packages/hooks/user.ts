@@ -28,14 +28,12 @@ import {
 } from "@karrio/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gqlstr, onError } from "@karrio/lib";
-import { useKarrio, setupRestClient } from "./karrio";
+import { useKarrio, useKarrioLogin, setupRestClient } from "./karrio";
 
 export function useUser() {
-  const karrio = useKarrio();
+  const karrio = useKarrioLogin();
 
   const user = karrio.pageData?.user;
-
-  console.log("Karrio context in useUser:", karrio);
 
   // Queries
   const query = useQuery({
