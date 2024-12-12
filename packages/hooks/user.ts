@@ -33,14 +33,19 @@ import { useKarrio, useKarrioLogin, setupRestClient } from "./karrio";
 export function useUser() {
   const karrio = useKarrioLogin();
 
-  console.log('oh shit', karrio)
+  console.log('useUser: karrio context:', karrio);
 
   const user = karrio.pageData?.user;
 
   // Queries
   const query = useQuery({
     queryKey: ["user"],
-    queryFn: () => karrio.graphql.request<GetUser>(gqlstr(GET_USER)),
+    queryFn: async () => {
+      console.log('useUser: Making GraphQL request with karrio.graphql:', karrio.graphql);
+      const response = await karrio.graphql.request<GetUser>(gqlstr(GET_USER));
+      console.log('useUser: GraphQL response:', response);
+      return response;
+    },
     initialData: user ? { user } : undefined,
     refetchOnWindowFocus: false,
     staleTime: 300000,
