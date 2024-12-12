@@ -19,6 +19,7 @@ export function Auth(HOST: string) {
   return {
     async authenticate(credentials: TokenObtainPair) {
       logger.debug("authenticating...");
+      console.log('credentials ye arse', credentials)
       const { data } = await axios.post(url$`${HOST || ""}/api/token`, credentials);
 
       return data;
