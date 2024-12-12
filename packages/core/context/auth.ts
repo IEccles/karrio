@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const { metadata } = await loadMetadata();
           console.log('valuable information', metadata, credentials);
           const auth = Auth(metadata?.HOST || (KARRIO_API as string));
-          console.log('Making POST request to /api/token with credentials:', credentials);
+          console.log('Making POST request to /api/token with credentials:', auth);
           const token = await auth.authenticate(credentials as any, { method: 'POST' });
           console.log('Received token:', token);
           const testMode = (headers() as unknown as UnsafeUnwrappedHeaders).get("referer")?.includes("/test");
