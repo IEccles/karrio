@@ -33,6 +33,8 @@ import { useKarrio, useKarrioLogin, setupRestClient } from "./karrio";
 export function useUser() {
   const karrio = useKarrioLogin();
 
+  console.log(karrio)
+
   const user = karrio.pageData?.user;
 
   // Queries
