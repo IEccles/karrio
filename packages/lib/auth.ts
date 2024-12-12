@@ -19,8 +19,9 @@ export function Auth(HOST: string) {
   return {
     async authenticate(credentials: TokenObtainPair) {
       logger.debug("authenticating...");
-      console.log('credentials ye arse', credentials, HOST)
-      const { data } = await axios.post('https://karrio.invente.co.uk/api/token', credentials);
+      console.log('credentials ye arse', credentials)
+      const endpoint = 'api/token'
+      const { data } = await axios.post(url$`${HOST}${endpoint}`, credentials);
       console.log('This is the data', data)
 
       return data;
