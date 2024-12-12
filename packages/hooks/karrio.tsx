@@ -125,7 +125,7 @@ export function setupRestClient(host: string, session?: SessionType): GraphQLCli
     headers,
   });
 
-  console.log('setupRestClient: Initialized GraphQLClient:', { client, session, host });
+  console.log('setupRestClient: Initialized GraphQLClient:', { client, session, host, headers });
 
   return client;
 }

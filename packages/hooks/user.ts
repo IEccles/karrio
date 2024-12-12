@@ -47,7 +47,7 @@ export function useUser() {
       }
 
       // Log the headers to ensure the authorization header is set
-      const headers = karrio.graphql.options.headers;
+      const headers = karrio.graphql.options?.headers;
       console.log('useUser: GraphQL request headers:', headers);
 
       const response = await karrio.graphql.request<GetUser>(gqlstr(GET_USER));
