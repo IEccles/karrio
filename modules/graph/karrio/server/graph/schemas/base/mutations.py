@@ -32,6 +32,7 @@ import karrio.server.graph.utils as utils
 import karrio.server.user.models as auth
 import karrio.server.iam.models as iam
 import karrio.lib as lib
+import karrio.server.graph.forms as graph_form
 
 logger = logging.getLogger(__name__)
 
@@ -311,7 +312,7 @@ class RequestPasswordResetMutation(utils.BaseMutation):
     def mutate(
         info: Info, **input: inputs.RequestPasswordResetMutationInput
     ) -> "RequestPasswordResetMutation":
-        form = forms.ResetPasswordRequestForm(data=input)
+        form = graph_form.ResetPasswordRequestForm(data=input)
 
         if form.is_valid():
             form.save(request=info.context.request)
