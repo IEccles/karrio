@@ -25,15 +25,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize({ orgId, ...credentials }: any, req: any) {
         try {
           const { metadata } = await loadMetadata();
-          console.log('valuable information', metadata, credentials)
+          console.log('valuable information', metadata, credentials);
           const auth = Auth(metadata?.HOST || (KARRIO_API as string));
+          console.log('Making POST request to /api/token with credentials:', credentials);
           const token = await auth.authenticate(credentials as any);
-          console.log('token innit', token)
+          console.log('Received token:', token);
           const testMode = (headers() as unknown as UnsafeUnwrappedHeaders).get("referer")?.includes("/test");
           const org = metadata?.MULTI_ORGANIZATIONS
             ? await auth.getCurrentOrg(token.access, orgId)
             : { id: null };
-      
+
           return {
             email: credentials.email,
             accessToken: token.access,
@@ -45,7 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           logger.error("Authorization error", e);
           throw new Error("auth failed");
         }
-      
+
         // Return null if user data could not be retrieved
         return null;
       },
