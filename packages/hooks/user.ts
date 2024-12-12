@@ -34,6 +34,11 @@ export function useUser() {
   const karrio = useKarrioLogin();
   const user = karrio.pageData?.user;
 
+  // Error handling function
+  const onError = (error: unknown) => {
+    console.error('Error fetching user data:', error);
+  };
+
   // Queries
   const query = useQuery({
     queryKey: ["user"],
