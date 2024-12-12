@@ -36,23 +36,15 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
 );
 
 export const ClientProvider = ({ children }) => {
-  const { getHost, references } = useAPIMetadata();
+  const { references } = useAPIMetadata();
   const { query: { data: session } } = useSyncedSession();
-
-  if (!getHost || !session) {
-    console.error("Missing dependencies: getHost or session", {
-      getHost: getHost?.(),
-      session,
-    });
-    return <div>Loading...</div>; // Provide fallback UI
-  }
 
   const updateClient = (ref, session) => {
     const client = {
-      ...setupRestClient(getHost(), session),
+      ...setupRestClient('https://karrio.invente.co.uk', session),
       isAuthenticated: !!session?.accessToken,
       pageData,
-      host: getHost(),
+      host: 'https://karrio.invente.co.uk',
       session,
     };
     console.log("Updated Client Context:", client);

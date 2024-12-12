@@ -21,7 +21,6 @@ export function Auth(HOST: string) {
       logger.debug("authenticating...");
       console.log('credentials ye arse', credentials)
       const endpoint = 'api/token'
-      console.log('testing url shite', `${HOST}${endpoint}`)
       const { data } = await axios.post(`https://karrio.invente.co.uk/api/token`, credentials);
       console.log('This is the data', data)
 
