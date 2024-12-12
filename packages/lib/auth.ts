@@ -19,12 +19,7 @@ export function Auth(HOST: string) {
   return {
     async authenticate(credentials: TokenObtainPair) {
       logger.debug("authenticating...");
-
-      const { data } = await axios({
-        url: url$`${HOST || ""}/api/token`,
-        method: "POST",
-        data: credentials,
-      });
+      const { data } = await axios.post(url$`${HOST || ""}/api/token`, credentials);
 
       return data;
     },
@@ -37,11 +32,7 @@ export function Auth(HOST: string) {
 
       const {
         data: { refresh, access },
-      } = await axios({
-        url: url$`${HOST || ""}/api/token/refresh`,
-        method: "POST",
-        data: { refresh: refreshToken },
-      });
+      } = await axios.post(url$`${HOST || ""}/api/token/refresh`, { refresh: refreshToken });
       return { access, refresh };
     },
     async getCurrentOrg(access: string, orgId?: string) {
