@@ -45,6 +45,11 @@ export function useUser() {
       if (!karrio.graphql) {
         throw new Error("GraphQL client is not initialized");
       }
+
+      // Log the headers to ensure the authorization header is set
+      const headers = karrio.graphql.options.headers;
+      console.log('useUser: GraphQL request headers:', headers);
+
       const response = await karrio.graphql.request<GetUser>(gqlstr(GET_USER));
       console.log('useUser: GraphQL response:', response);
       return response;
