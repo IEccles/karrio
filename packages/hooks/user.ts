@@ -42,6 +42,9 @@ export function useUser() {
     queryKey: ["user"],
     queryFn: async () => {
       console.log('useUser: Making GraphQL request with karrio.graphql:', karrio.graphql);
+      if (!karrio.graphql) {
+        throw new Error("GraphQL client is not initialized");
+      }
       const response = await karrio.graphql.request<GetUser>(gqlstr(GET_USER));
       console.log('useUser: GraphQL response:', response);
       return response;
