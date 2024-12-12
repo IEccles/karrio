@@ -35,28 +35,24 @@ export const APIClientsContext = React.createContext<APIClientsContextProps>(
   {} as APIClientsContextProps
 );
 
-export const ClientProvider = ({ children }) => {
-  const { references } = useAPIMetadata();
-  const { query: { data: session } } = useSyncedSession();
+export const ClientProvider = ({
+  children,
+  ...pageData
+}: ClientProviderProps): JSX.Element => {
+  const { getHost, references } = useAPIMetadata();
+  const {
+    query: { data: session },
+  } = useSyncedSession();
+  const updateClient = (ref: any, session: any) => ({
+    ...setupRestClient(getHost(), session),
+    isAuthenticated: !!session?.accessToken,
+    pageData,
+  });
 
-  const updateClient = (ref, session) => {
-    const client = {
-      ...setupRestClient('https://karrio.invente.co.uk', session),
-      isAuthenticated: !!session?.accessToken,
-      pageData,
-      host: 'https://karrio.invente.co.uk',
-      session,
-    };
-    console.log("Updated Client Context:", client);
-    return client;
-  };
-
-  const contextValue = updateClient(references, session);
-
-  console.log("ClientProvider: contextValue", contextValue);
+  if (!getHost || !getHost() || !session) return <></>;
 
   return (
-    <APIClientsContext.Provider value={contextValue}>
+    <APIClientsContext.Provider value={updateClient(references, session)}>
       {children}
     </APIClientsContext.Provider>
   );
