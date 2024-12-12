@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers, exceptions
 from rest_framework_simplejwt import views as jwt_views, serializers as jwt
 from two_factor.utils import default_device
-from .views import TokenObtainPair, TokenRefresh, TokenVerify, VerifiedTokenPair
 
 import karrio.server.openapi as openapi
 
