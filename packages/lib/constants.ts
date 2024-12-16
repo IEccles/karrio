@@ -31,7 +31,7 @@ if (typeof window === "undefined") {
   KARRIO_ADMIN_URL = env("KARRIO_ADMIN_URL");
   KARRIO_ADMIN_API_KEY = env("KARRIO_ADMIN_API_KEY");
 } else {
-  KARRIO_API = KARRIO_PUBLIC_URL;
+  KARRIO_API = 'https://karrio.invente.co.uk';
   POSTHOG_KEY = env("NEXT_PUBLIC_POSTHOG_KEY");
   POSTHOG_HOST = env("NEXT_PUBLIC_POSTHOG_HOST");
 }
