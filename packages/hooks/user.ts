@@ -32,7 +32,6 @@ import { useKarrio, useKarrioLogin, setupRestClient } from "./karrio";
 
 export function useUser() {
   const karrio = useKarrioLogin();
-  console.log('your having a fucking laugh mate')
   const user = karrio.pageData?.user;
 
   // Error handling function
