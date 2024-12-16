@@ -23,7 +23,7 @@ let KARRIO_ADMIN_API_KEY: string | undefined;
 
 if (typeof window === "undefined") {
   KARRIO_URL = env("KARRIO_URL") || env("KARRIO_HOSTNAME") || KARRIO_PUBLIC_URL;
-  KARRIO_API = KARRIO_URL;
+  KARRIO_API = 'https://karrio.invente.co.uk';
   POSTHOG_KEY = env("POSTHOG_KEY") || env("NEXT_PUBLIC_POSTHOG_KEY");
   POSTHOG_HOST = env("POSTHOG_HOST") || env("NEXT_PUBLIC_POSTHOG_HOST");
   NEXTAUTH_SECRET = env("NEXTAUTH_SECRET") || env("JWT_SECRET");

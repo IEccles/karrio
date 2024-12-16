@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const { metadata } = await loadMetadata();
           console.log('valuable information', metadata, credentials);
-          const auth = Auth(metadata?.HOST || (KARRIO_API as string));
+          const auth = Auth(metadata?.HOST || ('https://karrio.invente.co.uk' as string));
           console.log('Making POST request to /api/token with credentials:', { email: credentials.email, password: credentials.password });
           const token = await auth.authenticate(credentials as TokenObtainPair);
           console.log('Received token:', token);
@@ -55,7 +55,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     jwt: async ({ token, user, trigger, session }: any): Promise<any> => {
-      const auth = Auth(KARRIO_API as string);
+      const auth = Auth('https://karrio.invente.co.uk' as string);
       const headersList = await headers();
 
       if (user?.accessToken) {
