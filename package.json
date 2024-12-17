@@ -1,32 +1,26 @@
 {
+  "name": "@karrio/board",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "dev:oss": "turbo run dev:oss",
-    "dev:platform": "turbo run dev:platform",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "@rollup/plugin-json": "^6.0.1",
-    "eslint": "^8.48.0",
-    "prettier": "^3.0.3",
-    "tsconfig": "*",
-    "turbo": "^2.3.3"
+    "dev": "next dev --port 3002",
+    "dev:board": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@headlessui/react": "^1.7.19",
-    "@karrio/core": "0.0.0"
+    "@karrio/core": "*",
+    "@karrio/hooks": "*",
+    "@karrio/lib": "*",
+    "@karrio/types": "*",
+    "@karrio/ui": "*",
+    "@karrio/insiders": "*"
   },
-  "name": "karrio",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "ee/platform/apps/*",
-    "ee/platform/packages/*"
-  ],
-  "packageManager": "npm@10.8.2"
+  "devDependencies": {
+    "postcss": "^8",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.8",
+    "tsconfig": "*"
+  }
 }
