@@ -15,6 +15,12 @@
     "tsconfig": "*",
     "turbo": "^2.3.3"
   },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@headlessui/react": "^1.7.19",
+    "@karrio/core": "0.0.0"
+  },
   "name": "karrio",
   "workspaces": [
     "apps/*",
