@@ -39,7 +39,6 @@ export const ClientProvider = ({
   children,
   ...pageData
 }: ClientProviderProps): JSX.Element => {
-  console.log('actually get fucked')
   const { getHost, references } = useAPIMetadata();
   const {
     query: { data: session },
