@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --filter @karrio/api",
+    "dev": "turbo run dev",
     "dev:oss": "turbo run dev:oss",
     "dev:platform": "turbo run dev:platform",
     "lint": "turbo run lint",
