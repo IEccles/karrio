@@ -22,5 +22,14 @@
     "ee/platform/apps/*",
     "ee/platform/packages/*"
   ],
+  "dependencies": {
+    "@karrio/core": "*",
+    "@karrio/hooks": "*",
+    "@karrio/lib": "*",
+    "@karrio/types": "*",
+    "@karrio/ui": "*",
+    "@karrio/insiders": "*",
+    "@karrio/api": "*"
+  },
   "packageManager": "npm@10.8.2"
 }
