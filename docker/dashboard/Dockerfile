@@ -28,8 +28,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SENTRY_IGNORE_API_RESOLUTION_ERROR=1
 ENV NEXT_PUBLIC_DASHBOARD_VERSION=${VERSION}
-ENV NEXT_PUBLIC_DASHBOARD_URL=https://karrio.invente.co.uk
-ENV NEXT_PUBLIC_KARRIO_PUBLIC_URL=https://app.karrio.invente.co.uk
+ENV NEXT_PUBLIC_DASHBOARD_URL=https://app.karrio.invente.co.uk
+ENV NEXT_PUBLIC_KARRIO_PUBLIC_URL=https://karrio.invente.co.uk
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S karrio -u 1001
